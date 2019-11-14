@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content_header %}
+{#<div class="container">#}
+{#    <div class="row">#}
+{#        <div class="col-md-8 col-md-offset-2">#}
+{#            编辑模块#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{% endblock %}
+
+
+{% block content_fluid %}
+    <div class="container">
+    <div class="row">
+        <ul class="nav nav-tabs col-md-8 col-md-offset-2">
+            <li class="active"><a href="{% url 'md_list' pk %}">返回模块列表页</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        
+        <div class="col-md-8 col-md-offset-2">
+            {% include 'manage_form.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+

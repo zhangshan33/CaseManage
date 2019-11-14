@@ -1,0 +1,558 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+
+{% block css %}
+    {#        <link rel="stylesheet" href="{% static 'css/interface.css' %}">#}
+    <link rel="stylesheet" href="{% static 'css/checkbox.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sweetalert/sweetalert.min.css' %}">
+{% endblock %}
+
+
+{% block content_header %}
+    {#    <div class="container">#}
+    {#        <div class="row">#}
+    {#            <ul class="nav nav-tabs">#}
+    {#                <li role="presentation"><a href="{% url 'index' %}">返回</a></li>#}
+    {#                <li role="presentation"><a href="{% url 'case_add' %}">添加用例</a></li>#}
+    {#                <li role="presentation" class="dropdown">#}
+    {#                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"#}
+    {#                       aria-expanded="false">#}
+    {#                        所有项目<span class="caret"></span>#}
+    {#                    </a>#}
+    {#                    <ul class="dropdown-menu" id="filter_project">#}
+    {#                        {% for foo  in project_obj %}#}
+    {#                            <li><a href="#" value="{{ foo.id }}">{{ foo.project_name }}</a></li>#}
+    {#                        {% endfor %}#}
+    {#                    </ul>#}
+    {#                </li>#}
+    {#                <li role="presentation" class="dropdown">#}
+    {#                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"#}
+    {#                       aria-expanded="false">#}
+    {#                        所属模块<span class="caret"></span>#}
+    {#                    </a>#}
+    {#                    <ul class="dropdown-menu" id="filter_model">#}
+    {#                    {% for foo  in project_obj %}#}
+    {#                        <li><a href="#" value="">所有模块</a></li>#}
+    {#                    {% endfor %}#}
+    {#                    </ul>#}
+    {#                </li>#}
+    {##}
+    {##}
+    {#            </ul>#}
+    {#        </div>#}
+    {#        <div class="row show_null">#}
+    {#            <div class="col-md-12">#}
+    {#                <table class="table myTable table-hover">#}
+    {#                    <thead>#}
+    {#                    <tr>#}
+    {#                        <th>#}
+    {#                            <div class="el-checkbox el-checkbox-yellow allCheck">#}
+    {#                                <label class="el-checkbox el-checkbox">#}
+    {#                                          <span class="margin-r">全选</span>#}
+    {#                                    <input type="checkbox" title="全选">#}
+    {#                                    <span class="el-checkbox-style pull-right"></span>#}
+    {#                                </label>#}
+    {#                            </div>#}
+    {#                        </th>#}
+    {#                        <th>序号</th>#}
+    {#                        <th>标题</th>#}
+    {#                        <th>优先级</th>#}
+    {#                        <th>地址</th>#}
+    {#                        <th>请求方式</th>#}
+    {#                        <th>期望值</th>#}
+    {#                        <th>创建人</th>#}
+    {#                        <th>执行人</th>#}
+    {#                        <th>用例执行状态</th>#}
+    {#                        <th>用例执行结果</th>#}
+    {#                        <th>结果报告</th>#}
+    {#                        <th>操作</th>#}
+    {#                    </tr>#}
+    {#                    </thead>#}
+    {#                    <tbody class="case_list">#}
+    {#                    {% for interface in interface_obj %}#}
+    {#                        <tr>#}
+    {#                            <td>#}
+    {#                                <div class="el-checkbox el-checkbox-yellow">#}
+    {#                                    <label class="el-checkbox el-checkbox">#}
+    {#                                        <span class="margin-r"></span>#}
+    {#                                        <input type="checkbox" value="${item.pk}">#}
+    {#                                        <span class="el-checkbox-style pull-right"></span>#}
+    {#                                    </label>#}
+    {#                                </div>#}
+    {#                            </td>#}
+    {#                            <td>{{ forloop.counter }}</td>#}
+    {#                            <td>{{ interface.case_title }}</td>#}
+    {#                            <td>{{ interface.case_priority }}</td>#}
+    {#                            <td>{{ interface.case_url }}</td>#}
+    {#                            <td>{{ interface.case_method }}</td>#}
+    {#                            <td>{{ interface.case_expect }}</td>#}
+    {#                            <td>{{ interface.case_create_username }}</td>#}
+    {#                            <td>{{ interface.case_execute_username }}</td>#}
+    {#                            <td>{{ interface.case_execute_status }}</td>#}
+    {#                            <td>{{ interface.case_execute_pass }}</td>#}
+    {#                            {% if interface.case_media_report %}#}
+    {#                                <td>#}
+    {#                                    <button class="btn btn-success glyphicon glyphicon-eye-open" title="点击预览结果报告"#}
+    {#                                            pk="{{ interface.pk }}"></button>#}
+    {#                                </td>#}
+    {#                            {% else %}#}
+    {#                                <td>#}
+    {#                                    <button class="btn btn-default glyphicon glyphicon-eye-close"#}
+    {#                                            title="暂无结果报告"></button>#}
+    {#                                </td>#}
+    {#                            {% endif %}#}
+    {#                            <td>#}
+    {#                                <a class="btn btn-primary btn-sm" href="/case_edit/{{ interface.pk }}">编辑</a>#}
+    {#                                <a class="btn btn-danger btn-sm" href="/case_delete/{{ interface.pk }}">删除</a>#}
+    {#                            </td>#}
+    {#                        </tr>#}
+    {#                    {% endfor %}#}
+    {##}
+    {##}
+    {#                    </tbody>#}
+    {##}
+    {#                </table>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#        <div class="row operate" hidden>#}
+    {#            <div class="col-md-12">#}
+    {#                <div class="btn-group dropup">#}
+    {#                    <button type="button" class="btn btn-default">操作</button>#}
+    {#                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"#}
+    {#                            aria-haspopup="true" aria-expanded="false">#}
+    {#                        <span class="caret"></span>#}
+    {#                        <span class="sr-only">Toggle Dropdown</span>#}
+    {#                    </button>#}
+    {#                    <ul class="dropdown-menu executeMenu" style="min-width: 79px;z-index: 1000">#}
+    {#                        <li><a href="javascript:;" operation="executeCase">执行</a></li>#}
+    {#                        <li><a href="javascript:;" operation="deleteCase">删除</a></li>#}
+    {#                    </ul>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {##}
+    {#    </div>#}
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="min-width: 1000px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">用例执行结果报告</h4>
+
+            </div>
+            <div class="modal-body">
+                <div id="case_result">
+                    <div id="now_progress">正在执行用例，已完成: 0/0</div>
+                    <div class="progress" id="progress">
+                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0"
+                             aria-valuemin="0" aria-valuemax="100" style="min-width: 0%">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="case_report">
+
+{#                    <button class="btn btn-default"></button>#}
+                    {#                    <button type="button" class="btn btn-default" data-dismiss="modal" id="closeA">关闭</button>#}
+                    {#                    <a href="/static/AdminLTE-2.4.12/index.html" download="abc.html" class="btn btn-success">导出HTML</a>#}
+                    {#                    <a href="/static/AdminLTE-2.4.12/index.html" download="abc.html" class="btn btn-success">导出PDF</a>#}
+                    {#                    <a href="/static/AdminLTE-2.4.12/index.html" download="abc.html" class="btn btn-success">导出图片</a>#}
+                    {#                    <button type="button" class="btn btn-success" data-dismiss="modal" id="expectCaseResult">导出报告#}
+                    {#                    </button>#}
+                    {#                    <button type="button" class="btn btn-success" data-dismiss="modal" id="deleteCaseResult">删除报告#}
+                    {#                    </button>#}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content_fluid %}
+    <div class="">
+        <div class="row col-md-12">
+            <ul class="nav nav-tabs">
+                <li role="presentation"><a href="{% url 'index' %}">返回</a></li>
+
+                <li role="presentation" class="dropdown" flag="1">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        所有项目<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" id="filter_project">
+                        {% for foo  in project_obj %}
+                            <li><a href="#" value="{{ foo.id }}">{{ foo.project_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li role="presentation" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        所属模块<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" id="filter_model">
+                        {#                    {% for foo  in project_obj %}#}
+                        <li><a href="#" value="">所有模块</a></li>
+                        {#                    {% endfor %}#}
+                    </ul>
+                </li>
+                <li role="presentation"><a href="{% url 'case_add' %}">添加用例</a></li>
+
+            </ul>
+        </div>
+        <div class="row show_null">
+            <div class="col-md-12">
+                <table class="table myTable table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="el-checkbox el-checkbox-yellow allCheck">
+                                <label class="el-checkbox el-checkbox">
+                                    {#                                          <span class="margin-r">全选</span>#}
+                                    <input type="checkbox" title="全选">
+                                    <span class="el-checkbox-style pull-right"></span>
+                                </label>
+                            </div>
+                        </th>
+                        <th>序号</th>
+                        <th>标题</th>
+                        <th>优先级</th>
+                        <th>地址</th>
+                        <th>请求方式</th>
+                        <th>期望值</th>
+                        <th>创建人</th>
+                        <th>执行人</th>
+                        <th>用例执行状态</th>
+                        <th>用例执行结果</th>
+                        <th>结果报告</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody class="case_list">
+                    {% for interface in interface_obj %}
+                        <tr>
+                            <td>
+                                <div class="el-checkbox el-checkbox-yellow">
+                                    <label class="el-checkbox el-checkbox">
+                                        <span class="margin-r"></span>
+                                        <input type="checkbox" value="{{ interface.pk }}">
+                                        <span class="el-checkbox-style pull-right"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ interface.case_title }}</td>
+                            <td>{{ interface.case_priority }}</td>
+                            <td>{{ interface.case_url }}</td>
+                            <td>{{ interface.case_method }}</td>
+                            <td>{{ interface.case_expect }}</td>
+                            <td>{{ interface.case_create_username }}</td>
+                            <td>{{ interface.case_execute_username }}</td>
+                            <td>{{ interface.case_execute_status }}</td>
+                            <td>{{ interface.case_execute_pass }}</td>
+                            {% if interface.case_html_report %}
+                                <td>
+                                    <button class="btn btn-success glyphicon glyphicon-eye-open" title="点击预览结果报告"
+                                            pk="{{ interface.pk }}"></button>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <button class="btn btn-default glyphicon glyphicon-eye-close"
+                                            title="暂无结果报告"></button>
+                                </td>
+                            {% endif %}
+                            <td>
+                                <a class="btn btn-primary btn-sm glyphicon glyphicon-edit"
+                                   href="/case_edit/{{ interface.pk }}" title="编辑"></a>
+                                <a class="btn btn-danger btn-sm glyphicon glyphicon-floppy-remove"
+                                   href="/case_delete/{{ interface.pk }}" title="删除"></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        <div class="row operate" hidden>
+            <div class="col-md-12">
+                <div class="btn-group dropup">
+                    <button type="button" class="btn btn-default">操作</button>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu executeMenu" style="min-width: 79px;z-index: 1000">
+                        <li><a href="javascript:;" operation="executeCase">执行</a></li>
+                        <li><a href="javascript:;" operation="deleteCase">删除</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'js/bootstrap-checkbox.min.js' %}"></script>
+    <script src="{% static 'sweetalert/sweetalert.min.js' %}"></script>
+    <script>
+
+        // 用户结果报告预览
+        $(".case_list").on('click', '.glyphicon-eye-open', function () {
+            var pk = $(this).attr('pk');
+            $.ajax({
+                url: '{% url 'get_interface_case_report' %}',
+                type: "POST",
+                data: {'pk': pk},
+                success: function (data) {
+                    $('#myModal').modal('show');
+                    $(".modal-body").html(data['obj']);
+                    var html = `<button type="button" class="btn btn-default" data-dismiss="modal" onclick="on()">关闭</button>
+                    {#<a href="{% url 'case_result_report' status='html' %}" class="btn btn-success">导出HTML</a>#}
+                    <a href="#"  class="btn btn-success" id='single_report'>导出HTML</a>`
+
+
+
+
+                }
+            })
+        });
+
+        // 结果报告函数
+        function show_report(report) {
+
+        }
+
+
+        // alert(window.location.host)
+        // 全选，取消
+        $('.allCheck :checkbox').change(function () {
+            // 当全选按钮被选中时，勾选列表中的所有的
+            if ($(this).prop('checked')) {
+                $('.case_list :checkbox').prop('checked', true);
+                $(".operate").show();
+            } else {
+                // 当再次点击全选按钮，表示取消全选
+                $('.case_list :checked').prop('checked', false)
+            }
+        });
+
+        $(".case_list").on('click', ':checkbox', function () {
+            {#console.log(111111, $(this), $(this).val())#}
+            $(".operate").show();
+        });
+
+        // 二级联动，项目过滤
+        $("#filter_project").on('click', 'li a', function () {
+            var project_pk = $(this).attr('value');
+            $(this).parent().attr('flag', '1').siblings().removeAttr('flag');
+            $.ajax({
+                url: "/interface_choices/",
+                type: "POST",
+                data: {"project_pk": project_pk},
+                success: function (data) {
+
+                    ShowModel(data);
+                    ShowCaseData(data);
+
+
+                }
+            });
+        });
+
+        // 二级联动，模块过滤
+
+        $("#filter_model").on('click', 'li a', function () {
+            var model_pk = $(this).attr('value');
+
+            if (model_pk) {
+                var project_pk = $('#filter_project li[flag=1]').find('a').attr('value');
+                $.ajax({
+                    url: "/interface_choices/",
+                    type: "POST",
+                    data: {"project_pk": project_pk, 'model_pk': model_pk},
+                    success: function (data) {
+                        ShowCaseData(data);
+
+                    }
+                });
+            }
+        });
+
+        function ShowModel(data) {
+            var html = '';
+            $.each(JSON.parse(data.modelList), function (index, item) {
+                // html += '<option value="' + item.pk + '">' + item.fields.model_name + '</option>';
+                html += '<li><a href="#" value="' + item.pk + '">' + item.fields.model_name + '</a></li>'
+            });
+            $('#filter_model').html(html);
+        }
+
+        function ShowCaseData(data) {
+            var caseData = '';
+            $.each(JSON.parse(data.caseList), function (index, item) {
+                console.log(333333333, item.pk)
+                caseData += `<tr>
+                                        <td>
+                                            <div class="el-checkbox el-checkbox-yellow">
+                                                <label class="el-checkbox el-checkbox">
+                                                    <span class="margin-r"></span>
+                                                    <input type="checkbox" value="${item.pk}">
+                                                    <span class="el-checkbox-style pull-right"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>${index + 1}</td>
+                                        <td>${item.fields.case_title}</td>
+                                        <td>${item.fields.case_priority}</td>
+                                        <td>${item.fields.case_url}</td>
+                                        <td>${item.fields.case_method}</td>
+                                        <td>${item.fields.case_expect}</td>
+                                        <td>${item.fields.case_create_username}</td>
+                                        <td>${item.fields.case_execute_username}</td>
+                                        <td>${item.fields.case_execute_status}</td>
+                                        <td>${item.fields.case_execute_pass}</td>
+                                        {% if item.fields.case_execute_pass %}
+                                            <td>
+                                                <button class="btn btn-success glyphicon glyphicon-eye-open" title="点击预览结果报告"
+                                                        pk="{{ case.pk }}"></button>
+                                            </td>
+                                        {% else %}
+                                            <td>
+                                                <button class="btn btn-default glyphicon glyphicon-eye-close"
+                                                        title="暂无结果报告"></button>
+                                            </td>
+                                        {% endif %}
+                                        <td>
+                                            <a class="btn btn-primary btn-sm glyphicon glyphicon-edit" href="/case_edit/{{ item.pk }}" title="编辑"></a>
+                                            <a class="btn btn-danger btn-sm glyphicon glyphicon-floppy-remove" href="/case_delete/{{ item.pk }}" title="删除"></a>
+                                        </td>
+                                     </tr>`;
+
+            });
+            $(".case_list").html(caseData);
+        }
+
+
+        // 操作按钮系列
+        $(".executeMenu").on('click', 'li a', function () {
+            var operation = $(this).attr('operation');
+            if (typeof(window[operation]) == "function") {
+                window[operation]()
+            }
+        });
+
+        // 当点击操作按钮下面的执行标签
+        function executeCase() {
+            // var projectId = $(".selectProject").find('option:selected').val();
+            // var modelId = $(".selectModel").find('option:selected').val();
+            var l = new Array();
+
+            var caseID = $(".case_list :checked");
+            $.each(caseID, function (index, item) {
+                console.log(22222222, index, item)
+                l.push(item.value)
+            });
+            $('#myModal').modal('show');
+            var sk = new WebSocket('ws://127.0.0.1:8033/case/testcase1/');
+            sk.onopen = function () {
+                sk.send(JSON.stringify({"case_list": l}));
+            };
+            sk.onmessage = function (msg) {
+
+                msg = JSON.parse(msg.data);
+                // console.log(11111111, msg['msg'], typeof(msg['msg']));
+                if (typeof(msg['msg']) == "number") {
+                    // console.log(222222222, msg['msg']);
+                    $("#now_progress").html(`正在执行用例，已完成: ${msg['msg']}/${l.length}`);
+                    progress = `<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="${msg['msg']}" aria-valuemin="0" aria-valuemax="${l.length}" style="width: ${Math.round(msg['msg'] / l.length * 100)}%">${Math.round(msg['msg'] / l.length * 100)}%</div>`;
+                    $("#progress").html(progress);
+
+                } else {
+
+                    case_report = `
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="on()">关闭</button>
+                    {#<a href="{% url 'case_result_report' status='html' %}" class="btn btn-success">导出HTML</a>#}
+                    <a href="{% static 'case_result/result.html' %}" download="result.html" class="btn btn-success">导出HTML</a>`;
+                    {#<a href="{% static 'case_result/result.pdf' %}" download="result.pdf" class="btn btn-success">导出PDF</a>#}
+                    {#<a href="{% static 'case_result/result.png' %}" download="result.png" class="btn btn-success">导出图片</a>`;#}
+                    console.log(111111111, msg)
+                    $('#case_result').html(msg['msg']['html_report_content']);
+                    $("#case_report").html(case_report);
+                    {#console.log(1111111111, msg['msg'])#}
+                    $("#case_report").on('click', 'a', function () {
+                        var url = $(this).attr('url');
+                        $.ajax({
+                            url: '/case/case_result_report/',
+                            type: "POST",
+                            data: {'status': url},
+                            success: function (data) {
+                                console.log(data)
+                            }
+                        })
+                    })
+                }
+                // 生成导出文件标签
+
+
+                if (sk.readyState == WebSocket.CLOSED) sk.close();
+            };
+            sk.onclose = function (msg) {
+                console.log('websocket connection close...');
+                sk.close()
+            };
+            if (sk.readyState == WebSocket.OPEN) sk.onopen();
+        }
+
+        // 当点击操作按钮下面的删除标签
+        function deleteCase() {
+            console.log('deleteCase')
+        }
+
+        // 导出测试用例报告
+        $("#expectCaseResult").click(function () {
+
+        });
+
+        $("#sw").click(function () {
+            var inp = document.createElement('input');
+
+            swal({
+                content: {
+                    element: "input",
+                    attributes: {
+                        placeholder: "Type your password",
+                        type: "password",
+                    },
+                },
+            });
+        })
+
+        function on() {
+            $('.case_list :checked').prop('checked', false);
+            var idMsg = $(".selectProject").find('option:selected').val();
+            $.ajax({
+                url: "/interface_choices/",
+                type: "POST",
+                data: {"id": idMsg},
+                success: function (data) {
+                    ShowCaseData(data);
+                }
+            });
+        }
+
+
+    </script>
+
+{% endblock %}

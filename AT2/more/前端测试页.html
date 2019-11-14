@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
+
+    <style>
+        input {
+            position: relative;
+            display: block;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+
+<div id="clock">
+   <span id="hour">00</span>:
+   <span id="minute">00</span>:
+   <span id="second">00</span>
+  </div>
+
+
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script>
+    var h, m, s;
+    h = m = s = 0;
+    var hours = $("#hour");
+    var minutes = $("#minute");
+    var seconds = $("#second");
+    var clock = function () {
+        //秒数每秒自增1
+        s += 1;
+        if (s >= 0 && s < 10) {
+            seconds.html('0' + s);//如果秒数是个位数,则在前面加个0
+        } else if (s >= 0 && s <= 59) { //如果秒数是两位 则正常显示秒数
+            s = s;
+            seconds.html(s);
+        } else {
+            s = 0; //如果秒数大于60,则把秒数清零;
+            m = m + 1; //分钟递增1
+            seconds.html('00');
+        }
+        if (m >= 0 && m < 10) {
+            minutes.html('0' + m);
+        } else if (m <= 59) {
+            m = m;
+            minutes.html(m);
+        } else if (m >= 60) {
+            m = 0;
+            h = h + 1;
+            minutes.html('00');
+        }
+        if (h >= 0 && h < 10) {
+            hours.html('0' + h);
+        } else if (h > 0 && h <= 59) {
+            h = h;
+            hours.html(h);
+        }
+
+    }
+    var timer = function () {  //开始计时函数
+        setInterval(clock, 1000)
+        console.log()
+    }
+    timer();
+</script>
+
+
+</html>

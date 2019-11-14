@@ -1,0 +1,396 @@
+{#{% extends 'base.html' %}#}
+{#{% load staticfiles %}#}
+{##}
+{#{% block css %}#}
+{#    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/lib/codemirror.css' %}">#}
+{#    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/addon/fold/foldgutter.css' %}">#}
+{#    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/addon/hint/show-hint.css' %}">#}
+{#    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/addon/lint/lint.css' %}">#}
+{#    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/addon/lint/lint.css' %}">#}
+{#    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/theme/darcula.css' %}">#}
+{#{% endblock %}#}
+{##}
+{##}
+{#{% block content_header %}#}
+{#    <div class="input-group">#}
+{#        <span class="input-group-addon">#}
+{#            <a href="{% url 'ui_index' 0 %}">返回</a>#}
+{#        </span>#}
+{#        <span class="input-group-addon execute" style="cursor: pointer">Run</span>#}
+{#        <select name="" id="" class="form-control">#}
+{#            {% for pro in project %}#}
+{#                {% if case.case_vest_project_id == pro.pk %}#}
+{#                    <option value="{{ pro.pk }}" selected>{{ pro.project_name }}</option>#}
+{#                {% else %}#}
+{#                    <option value="{{ pro.pk }}">{{ pro.project_name }}</option>#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{#        </select>#}
+{#        <span class="input-group-addon save_case" style="cursor: pointer">保存用例</span>#}
+{#        <input type="text" class="form-control case_name" value="{{ case.case_name }}">#}
+{##}
+{#    </div>#}
+{#{% endblock %}#}
+{##}
+{#{% block content_fluid %}#}
+{##}
+{#    <from>#}
+{##}
+{#        <textarea id="editor" class="editor"></textarea>#}
+{#        <button id="test" class="btn btn-success">Run</button>#}
+{##}
+{#            <div class="btn-group" role="group" aria-label="...">#}
+{#                #}
+{#                <button type="button" class="btn btn-default">Middle</button>#}
+{#                <button type="button" class="btn btn-default">Right</button>#}
+{#            </div>#}
+{##}
+{#        <button class="glyphicon glyphicon-play btn btn-success execute"></button>#}
+{#    </from>#}
+{##}
+{#    <form action="" id="case_result">#}
+{##}
+{#        <textarea name="" id="case_result"  class="form-control"#}
+{#                  style="background: #2B2B2B;color: #BBBBBB" ></textarea>#}
+{#    </form>#}
+{##}
+{#{% endblock %}#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#{% block js %}#}
+{#    <script src="{% static 'codemirror-5.49.0/lib/codemirror.js' %}"></script>#}
+{#    <script src="{% static 'codemirror-5.49.0/addon/comment/comment.js' %}"></script>#}
+{#    <script src="{% static 'codemirror-5.49.0/addon/selection/active-line.js' %}"></script>#}
+{#    <script src="{% static 'codemirror-5.49.0/addon/hint/show-hint.js' %}"></script>#}
+{#    <script src="{% static 'codemirror-5.49.0/addon/fold/foldcode.js' %}"></script>#}
+{#    <script src="{% static 'codemirror-5.49.0/addon/fold/brace-fold.js' %}"></script>#}
+{#    <script src="{% static 'codemirror-5.49.0/addon/fold/indent-fold.js' %}"></script>#}
+{#    <script src="{% static 'codemirror-5.49.0/addon/fold/comment-fold.js' %}"></script>#}
+{#    <script src="{% static 'codemirror-5.49.0/addon/edit/closebrackets.js' %}"></script>#}
+{#    <script src="{% static 'codemirror-5.49.0/addon/edit/matchbrackets.js' %}"></script>#}
+{#    <script src="{% static 'codemirror-5.49.0/mode/python/python.js' %}"></script>#}
+{#    <script src="{% static 'codemirror-5.49.0/mode/javascript/javascript.js' %}"></script>#}
+{#    <script src="{% static 'codemirror-5.49.0/keymap/sublime.js' %}"></script>#}
+{#    <script>#}
+{##}
+{#        // 编辑器设置#}
+{#        window.onload = function editor() {#}
+{#var myDate = new Date();#}
+{#            var el = document.getElementById("editor");#}
+{#var encoding = "# -*- coding: utf-8 -*-\n";#}
+{#var author = '# __author__ = "张开"\n';#}
+{#var date = "# " + myDate.toLocaleDateString();#}
+{#            var initValue = '';#}
+{#            $.each({{ res | safe}}, function (index, item) {#}
+{#                initValue += item#}
+{#            });#}
+{#            // console.log(initValue)#}
+{#            var myCodeMirror = CodeMirror.fromTextArea(el, {#}
+{#                mode: "python", // 语言模式#}
+{#                theme: "darcula", // 主题#}
+{#                keyMap: "sublime", // 快键键风格#}
+{#                lineNumbers: true, // 显示行号#}
+{#                smartIndent: true, // 智能缩进#}
+{#                indentUnit: 4, // 智能缩进单位为4个空格长度#}
+{#                indentWithTabs: true, // 使用制表符进行智能缩进#}
+{#                lineWrapping: true, //#}
+{#                // 在行槽中添加行号显示器、折叠器、语法检测器#}
+{#                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],#}
+{#                foldGutter: true, // 启用行槽中的代码折叠#}
+{#                autofocus: true, // 自动聚焦#}
+{#                matchBrackets: true, // 匹配结束符号，比如"]、}"#}
+{#                autoCloseBrackets: true, // 自动闭合符号#}
+{#                styleActiveLine: true, // 显示选中行的样式#}
+{#            });#}
+{#            // 设置初始文本，这个选项也可以在fromTextArea中配置#}
+{#            myCodeMirror.setOption("value", initValue);#}
+{#            // 编辑器按键监听#}
+{#            myCodeMirror.on("keypress", function () {#}
+{#                // 显示智能提示#}
+{#                // myCodeMirror.showHint(); // 注意，注释了CodeMirror库中show-hint.js第131行的代码（阻止了代码补全，同时提供智能提示）#}
+{#            });#}
+{#            // 向后端发送代码，执行并返回执行结果#}
+{#            $(".execute").click(function () {#}
+{#                var value = myCodeMirror.getValue();#}
+{#                if (value) {#}
+{#                    $.ajax({#}
+{#                        url: '{% url 'ui_execute' %}',#}
+{#                        type: "POST",#}
+{#                        data: {"value": value},#}
+{#                        success: function (data) {#}
+{#                            if (data.length < 1000) {#}
+{#                                $("#case_result").html('<pre>' + data + '</pre>');#}
+{#                            } else {#}
+{#                                $("#case_result").html('<div class="alert alert-danger" role="alert">结果太长了......</div>');#}
+{#                            }#}
+{#                        }#}
+{#                    })#}
+{#                } else {#}
+{#                    $("#case_result").html('<div class="alert alert-danger" role="alert">没有可执行的代码</div>');#}
+{#                }#}
+{##}
+{##}
+{#            });#}
+{#            // 保存用例#}
+{#            $(".save_case").click(function () {#}
+{#                var value = myCodeMirror.getValue();#}
+{#                var case_name = $(".case_name").val();#}
+{#                if (value) {#}
+{#                    $.ajax({#}
+{#                        url: '{% url 'ui_add_case' %}',#}
+{#                        type: "POST",#}
+{#                        data: {"case_code": value, "case_name": case_name},#}
+{#                        success: function (data) {#}
+{##}
+{#                            if (data.length < 1000) {#}
+{#                                $("#case_result").html('<pre>' + data + '</pre>');#}
+{#                            } else {#}
+{#                                $("#case_result").html('<div class="alert alert-danger" role="alert">结果太长了......</div>');#}
+{#                            }#}
+{#                        }#}
+{#                    })#}
+{#                } else {#}
+{#                    $("#case_result").html('<div class="alert alert-danger" role="alert">没有可执行的代码</div>');#}
+{#                }#}
+{##}
+{##}
+{#            });#}
+{#        };#}
+{##}
+{#    </script>#}
+{#{% endblock %}#}
+
+
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/lib/codemirror.css' %}">
+    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/addon/fold/foldgutter.css' %}">
+    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/addon/hint/show-hint.css' %}">
+    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/addon/lint/lint.css' %}">
+    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/addon/lint/lint.css' %}">
+    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/theme/darcula.css' %}">
+    <link rel="stylesheet" href="{% static 'sweetalert/sweetalert.min.css' %}">
+{% endblock %}
+
+
+{% block content_header %}
+    <div class="container">
+        <div class="row">
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button class="btn btn-default execute_case">Run</button>
+                    <button class="btn btn-default">
+                        <a href="{% url 'ui_index' 0 %}">返回</a>
+                    </button>
+                </div>
+                <select name="" id="case_vest_project" class="form-control">
+                    {% for pro in project %}
+                        {% if case.case_vest_project_id == pro.pk %}
+                            <option value="{{ pro.pk }}" selected>{{ pro.project_name }}</option>
+                        {% else %}
+                            <option value="{{ pro.pk }}">{{ pro.project_name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <span class="input-group-addon btn">用例名称</span>
+                <input type="text" class="form-control" aria-label="..." id="case_value" value="{{ case.case_name }}">
+                <span class="input-group-addon btn save_case">保存用例</span>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block content_fluid %}
+    <div class="container">
+        <div class="row">
+
+            <from>
+
+                <textarea id="editor" class="editor"></textarea>
+                {#        <button id="test" class="btn btn-success">Run</button>#}
+
+                {#            <div class="btn-group" role="group" aria-label="...">#}
+                {#                #}
+                {#                <button type="button" class="btn btn-default">Middle</button>#}
+                {#                <button type="button" class="btn btn-default">Right</button>#}
+                {#            </div>#}
+
+                {#        <button class="glyphicon glyphicon-play btn btn-success execute"></button>#}
+            </from>
+
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#"
+                                                          class="btn btn-danger glyphicon glyphicon-play execute_case">Run</a>
+                </li>
+                <li role="presentation"><a href="#" class="btn  save_case">保存用例</a></li>
+
+            </ul>
+            <form action="" id="case_result">
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>Warning!</strong> 实现 <strong>execute</strong>函数返回用例执行结果 <strong>True or False</strong>
+                </div>
+
+                {#        <textarea name="" id="case_result"  class="form-control"#}
+                {#                  style="background: #2B2B2B;color: #BBBBBB" ></textarea>#}
+            </form>
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+{% block js %}
+    <script src="{% static 'sweetalert/sweetalert.min.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/lib/codemirror.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/comment/comment.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/selection/active-line.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/hint/show-hint.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/fold/foldcode.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/fold/brace-fold.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/fold/indent-fold.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/fold/comment-fold.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/edit/closebrackets.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/edit/matchbrackets.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/mode/python/python.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/mode/javascript/javascript.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/keymap/sublime.js' %}"></script>
+    <script>
+
+        // 编辑器设置
+        window.onload = function editor() {
+            /*
+            var myDate = new Date();
+            var encoding = "# -*- coding: utf-8 -*-\n";
+            var author = '# __author__ = "张开"\n';
+            var date = "# " + myDate.toLocaleDateString();
+            */
+            var initValue = '';
+            $.each({{ res | safe}}, function (index, item) {
+                initValue += item
+            });
+
+            // var initValue = '# 请用execute函数将用例结果返回True or False';
+            var el = document.getElementById("editor");
+            var myCodeMirror = CodeMirror.fromTextArea(el, {
+                mode: "python", // 语言模式
+                theme: "darcula", // 主题
+                keyMap: "sublime", // 快键键风格
+                lineNumbers: true, // 显示行号
+                smartIndent: true, // 智能缩进
+                indentUnit: 4, // 智能缩进单位为4个空格长度
+                indentWithTabs: true, // 使用制表符进行智能缩进
+                lineWrapping: true, //
+                // 在行槽中添加行号显示器、折叠器、语法检测器
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
+                foldGutter: true, // 启用行槽中的代码折叠
+                autofocus: true, // 自动聚焦
+                matchBrackets: true, // 匹配结束符号，比如"]、}"
+                autoCloseBrackets: true, // 自动闭合符号
+                styleActiveLine: true, // 显示选中行的样式
+            });
+            // 设置初始文本，这个选项也可以在fromTextArea中配置
+            myCodeMirror.setOption("value", initValue);
+            // 编辑器按键监听
+            myCodeMirror.on("keypress", function () {
+                // 显示智能提示
+                // myCodeMirror.showHint(); // 注意，注释了CodeMirror库中show-hint.js第131行的代码（阻止了代码补全，同时提供智能提示）
+            });
+            // 向后端发送代码，执行并返回执行结果
+            $(".execute_case").click(function () {
+                var value = myCodeMirror.getValue();
+                console.log(111111, value)
+                if (value) {
+                    $.ajax({
+                        url: '{% url 'ui_execute' %}',
+                        type: "POST",
+                        data: {"value": value},
+                        success: function (data) {
+                            if (data.length < 1000) {
+                                $("#case_result").html('<pre>' + data + '</pre>');
+                            } else {
+                                $("#case_result").html('<div class="alert alert-danger" role="alert">结果太长了......</div>');
+                            }
+                        }
+                    })
+                } else {
+                    $("#case_result").html('<div class="alert alert-danger" role="alert">没有可执行的代码</div>');
+                }
+
+
+            });
+            // 保存用例
+            $(".save_case").click(function () {
+                var case_name = $("#case_value").val();
+                var value = myCodeMirror.getValue();
+                var case_vest_project = $("#case_vest_project").find('option:selected').val();
+                // console.log(222, case_name, typeof(case_name), value, typeof(value), case_vest_project);
+
+                if (case_name == '' || value == '' || case_vest_project == '') {
+                    // 如果用例名称或者代码框为空
+                    swal({
+                        title: "Error",
+                        text: "用例名称和代码栏不能为空！",
+                        timer: 2000,
+                        showConfirmButton: false
+                    })
+                } else {
+                    if (value) {
+                        $.ajax({
+                            url: '{% url 'ui_edit_case' case.pk %}',
+                            type: "POST",
+                            data: {"case_code": value, "case_name": case_name, "case_vest_project": case_vest_project},
+                            success: function (data) {
+                                if (data) {
+                                    swal({
+                                        title: "Successful",
+                                        text: "用例保存成功",
+                                        timer: 2000,
+                                        showConfirmButton: false
+                                    });
+                                    window.location.href = '{% url 'ui_index' 0 %}'
+                                } else {
+                                    swal({
+                                        title: "Error",
+                                        text: "用例保存失败",
+                                        timer: 2000,
+                                        showConfirmButton: false
+                                    })
+                                }
+                            }
+                        })
+                    } else {
+                        $("#case_result").html('<div class="alert alert-danger" role="alert">没有可执行的代码</div>');
+                    }
+                }
+
+
+            });
+        };
+        // 结果展示
+        $(".case_result_alert").click(function () {
+            // swal("Good job!", "You clicked the button!", "warning");  // warning
+        })
+
+
+    </script>
+{% endblock %}

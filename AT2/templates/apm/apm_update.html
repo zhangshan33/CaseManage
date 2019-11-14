@@ -1,0 +1,405 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/lib/codemirror.css' %}">
+    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/addon/fold/foldgutter.css' %}">
+    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/addon/hint/show-hint.css' %}">
+    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/addon/lint/lint.css' %}">
+    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/addon/lint/lint.css' %}">
+    <link rel="stylesheet" href="{% static 'codemirror-5.49.0/theme/darcula.css' %}">
+    <link rel="stylesheet" href="{% static 'sweetalert/sweetalert.min.css' %}">
+{% endblock %}
+
+
+{% block content_header %}
+
+    <div class="container">
+        <div class="row">
+            {#            <div class="alert" role="alert" style="background-color: #fcf8e3">#}
+            {#                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span#}
+            {#                        aria-hidden="true">&times;</span>#}
+            {#                </button>#}
+            {#                <strong>Tips！</strong> 目前 浏览器仅支持#}
+            {#                <img src="{% static 'img/browser/compatible_chrome.png' %}" alt="">#}
+            {#                <img src="{% static 'img/browser/compatible_firefox.png' %}" alt="">#}
+            {#                <img src="{% static 'img/browser/compatible_safari.png' %}" alt="">#}
+            {#                <img src="{% static 'img/browser/compatible_ie.png' %}" alt="">#}
+            {#            </div>#}
+        </div>
+        <div class="row">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <a href="{% url 'apm_index' 0 %}">返回</a>
+                </span>
+                <select name="" id="case_vest_project" class="form-control">
+                    {% for pro in project_obj %}
+                        {% if ui_case_obj.case_vest_project_id == pro.pk %}
+                            <option value="{{ pro.pk }}" selected>{{ pro.project_name }}</option>
+                        {% else %}
+                            <option value="{{ pro.pk }}">{{ pro.project_name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <span class="input-group-addon btn">用例名称</span>
+                <input type="text" class="form-control" aria-label="..." id="case_value"
+                       value="{{ apm_case_obj.case_name }}">
+                {% if apm_case_obj %}
+                    <span class="input-group-addon ">用例是否通过</span>
+                    <select name="" id="border" class="form-control border">
+                        {% for foo in apm_case_obj.case_execute_pass_choices %}
+                            <option value="{{ foo.0 }}">{{ foo.1 }}</option>
+                        {% endfor %}
+
+                    </select>
+                {% endif %}
+                <span class="input-group-addon btn save_case">保存用例</span>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block content_fluid %}
+    <div class="container">
+    <div class="row">
+
+
+
+{#    <div class="col-md-6" style="padding-right: 0;padding-left: 15px;">#}
+            <div>
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <strong>重要的提示</strong> 目前可用于测试的设备列表如下，当你在左侧编辑执行 case 的时候，请选择这些可用的设备：
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    {% if devices_list %}
+                        {% for devices in devices_list %}
+                        <p><code>{{ devices }}</code></p>
+                    {% endfor %}
+                    {% else %}
+                        啊哦！ 没有可用的设备哦！
+                    {% endif %}
+
+                    <p></p>
+{#                    <div>#}
+{#                        <strong>现在，</strong>也可以在线执行一些命令了，试试 "adb devices"#}
+{#                    </div>#}
+{#                <div class="input-group">#}
+{#                    <span class="input-group-addon">$></span>#}
+{#                    <input type="text" class="form-control command_content" value="adb devices">#}
+{#                    <span class="input-group-addon btn execute_cmd_command" onclick="send_cmd_command()">Run now</span>#}
+{#                </div>#}
+                </div>
+            </div>
+            <div >
+                <div class="alert alert-success" role="alert" >
+                    <strong>现在，</strong>也可以在线执行一些命令了，试试：
+                    <p><code>adb devices</code></p>
+                    <p><code>appium -p 4700 -bp 4701 -U 127.0.0.1:62001 --no-reset --session-override</code></p>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">$></span>
+                    <input type="text" class="form-control command_content" value="adb devices">
+                    <span class="input-group-addon btn execute_cmd_command" onclick="send_cmd_command()">Run now</span>
+                </div>
+            </div>
+{#            <div class="btn-group">#}
+{#                <button class="btn btn-success" title="执行用例">xxx </button>#}
+{#            </div>#}
+
+{#        </div>#}
+
+    </div>
+    <div class="row">
+{#        <div class="col-md-6" style="padding-left: 0;padding-right: 15px;">#}
+            <form>
+
+                <textarea id="editor" class="editor"></textarea>
+                {#        <button id="test" class="btn btn-success">Run</button>#}
+
+                {#            <div class="btn-group" role="group" aria-label="...">#}
+                {#                #}
+                {#                <button type="button" class="btn btn-default">Middle</button>#}
+                {#                <button type="button" class="btn btn-default">Right</button>#}
+                {#            </div>#}
+
+                {#        <button class="glyphicon glyphicon-play btn btn-success execute"></button>#}
+            </form>
+{#        </div>#}
+    </div>
+    <div class="row">
+{#        <ul class="nav nav-tabs">#}
+{#            <li role="presentation"><a href="#" class="btn btn-danger glyphicon glyphicon-play execute_case"#}
+{#                                       title="执行"></a>#}
+{#            </li>#}
+{#            <li role="presentation"><a href="#" class="btn btn-info glyphicon glyphicon-floppy-save save_case"#}
+{#                                       pk="{{ ui_case_obj.pk }}" id="case_pk" title="保存用例"></a></li>#}
+{#            <li><a href="#" class="btn btn-success check" case_execute_pass="">用例执行通过</a></li>#}
+{#        </ul>#}
+        <div class="btn-group">
+            <button class="btn btn-danger glyphicon glyphicon-play execute_case" title="执行"></button>
+            <button class="btn btn-info glyphicon glyphicon-floppy-save save_case" title="保存用例" pk="{{ apm_case_obj.pk }}" id="case_pk"></button>
+        </div>
+        <div id="case_result" style="overflow-y:scroll;max-height: 500px;">
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+{% block js %}
+    <script src="{% static 'sweetalert/sweetalert.min.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/lib/codemirror.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/comment/comment.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/selection/active-line.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/hint/show-hint.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/fold/foldcode.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/fold/brace-fold.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/fold/indent-fold.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/fold/comment-fold.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/edit/closebrackets.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/addon/edit/matchbrackets.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/mode/python/python.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/mode/javascript/javascript.js' %}"></script>
+    <script src="{% static 'codemirror-5.49.0/keymap/sublime.js' %}"></script>
+
+    <script>
+        // 发送命令
+        function send_websocket_msg(send_msg, type_msg) {
+            var sk = new WebSocket('ws://' + window.location.host + '/apm/apm_execute_cmd_command/');
+            // 向服务端发送消息
+            sk.onopen = function () {
+                console.log('websocket connection successful...');
+                // 首先清空上一次的执行结果
+                $("#case_result").html('');
+                $("#case_result").append("<pre></pre>");
+                sk.send(JSON.stringify({'send_msg': send_msg, 'type_msg': type_msg}));
+
+            };
+            // 接收服务端的消息，主要的业务逻辑也在这里完成
+            sk.onmessage = function (msg) {
+                // 业务逻辑
+                // console.log(1111111111111, msg);
+                var data_msg = JSON.parse(msg['data']);
+                $("#case_result pre").append(data_msg['result_msg']);
+                // 由于服务端主动断开连接，这里也断开WebSocket连接
+                if (sk.readyState == WebSocket.CLOSED) sk.close();
+            };
+            // 完事就关闭WebSocket连接
+            sk.onclose = function (msg) {
+                console.log('websocket connection close...');
+                sk.close()
+            };
+            // 当WebSocket连接创建成功后，我们就可以向服务端发送数据了
+            if (sk.readyState == WebSocket.OPEN) sk.onopen();
+        }
+
+        // 执行终端命令
+        function send_cmd_command() {
+            var command_content = $(".command_content").val();
+            var type_msg = 'cmd';
+            send_websocket_msg(command_content, type_msg)
+        };
+
+
+        // 编辑器设置
+        window.onload = function editor() {
+
+            {#var code1 = "# -*- coding: utf-8 -*-\n\n";#}
+            {#var code2 = "def execute(result):\n";#}
+            {#var code3 = "    ''' 在这里实现测试用例，最后返回 1/0 :成功/失败 '''";#}
+
+
+            var case_code = '';
+            $.each({{ apm_case_obj_case_code | safe}}, function (index, item) {
+                case_code += item
+            });
+
+            var initValue = case_code;
+            var el = document.getElementById("editor");
+            var myCodeMirror = CodeMirror.fromTextArea(el, {
+                mode: "python", // 语言模式
+                theme: "darcula", // 主题
+                keyMap: "sublime", // 快键键风格
+                lineNumbers: true, // 显示行号
+                smartIndent: true, // 智能缩进
+                indentUnit: 4, // 智能缩进单位为4个空格长度
+                indentWithTabs: true, // 使用制表符进行智能缩进
+                lineWrapping: true, //
+                // 在行槽中添加行号显示器、折叠器、语法检测器
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
+                foldGutter: true, // 启用行槽中的代码折叠
+                autofocus: true, // 自动聚焦
+                matchBrackets: true, // 匹配结束符号，比如"]、}"
+                autoCloseBrackets: true, // 自动闭合符号
+                styleActiveLine: true, // 显示选中行的样式
+            });
+            // 设置初始文本，这个选项也可以在fromTextArea中配置
+            myCodeMirror.setOption("value", initValue);
+            // 编辑器按键监听
+            myCodeMirror.on("keypress", function () {
+                // 显示智能提示
+                // myCodeMirror.showHint(); // 注意，注释了CodeMirror库中show-hint.js第131行的代码（阻止了代码补全，同时提供智能提示）
+            });
+            // 向后端发送代码，执行并返回执行结果
+            $(".execute_case").click(function () {
+                var value = myCodeMirror.getValue();
+                var type_msg = 'appium';
+                if (value) {
+                    console.log(1111111, type_msg)
+                    send_websocket_msg(value, type_msg);
+
+
+                    /*
+                    $.ajax({
+                        url: '{% url 'ui_execute' %}',
+                        type: "POST",
+                        data: {"value": value},
+                        success: function (data) {
+                            // 首先清空上一次的执行结果
+                            $("#case_result").html('');
+                            $("#case_result").append("<pre></pre>");
+                            if (data) {
+                                $("#case_result pre").text(data);
+                            } else {
+                                $("#case_result").html('<div class="alert alert-danger" role="alert">没有可执行的代码</div>');
+                            }
+
+                        }
+                    })
+
+                    var sk = new WebSocket('ws://' + window.location.host + '/apm/ui_execute/');
+                    // 向服务端发送消息
+                    sk.onopen = function () {
+                        console.log('websocket connection successful...');
+                        // 首先清空上一次的执行结果
+                        $("#case_result").html('');
+                        $("#case_result").append("<pre></pre>");
+                        sk.send(JSON.stringify({
+                            "case_code": value,
+                            'screen_status': screenStatus,
+                            'case_id': case_id
+                        }));
+                        // 显示计时器
+                        $("#clock").show();
+                        // 启动计时器
+                        timer()
+
+                    };
+                    // 接收服务端的消息，主要的业务逻辑也在这里完成
+                    sk.onmessage = function (msg) {
+                        // 业务逻辑
+                        // 显示打印结果
+                        $("#case_result").show();
+                        console.log(typeof(msg), msg);
+                        var data_msg = JSON.parse(msg['data']);
+
+
+                        $("#case_result pre").append(data_msg['msg']);
+                        // 由于服务端主动断开连接，这里也断开WebSocket连接
+                        // console.log(111111111111, sk.readyState)
+                        if (sk.readyState == WebSocket.CLOSED) sk.close();
+                    };
+                    // 完事就关闭WebSocket连接
+                    sk.onclose = function (msg) {
+                        console.log('websocket connection close...');
+                        clearInterval(stop_timer)
+                        sk.close()
+                    };
+                    // 当WebSocket连接创建成功后，我们就可以向服务端发送数据了
+                    if (sk.readyState == WebSocket.OPEN) sk.onopen();
+                    */
+
+                } else {
+                    $("#case_result").html('<div class="alert alert-danger" role="alert">没有可执行的代码</div>');
+                }
+
+
+            });
+            // 保存用例
+            $(".save_case").click(function () {
+                var case_name = $("#case_value").val();
+                var case_pk = $("#case_pk").attr('pk') == "" ? 0 : $("#case_pk").attr('pk');
+                var value = myCodeMirror.getValue();
+                var case_vest_project = $("#case_vest_project").find('option:selected').val();
+                var case_execute_pass = $("#border").find('option:selected').val() ? $("#border").find('option:selected').val() : 1;
+                // console.log(222, case_name, typeof(case_name), value, typeof(value), case_vest_project);
+                // console.log(111, case_pk)
+                if (case_name == '' || value == '' || case_vest_project == '') {
+                    // 如果用例名称或者代码框为空
+                    swal({
+                        title: "Error",
+                        text: "用例名称和代码栏不能为空！",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                } else {
+                    if (value) {
+                        $.ajax({
+                            url: '/apm/apm_update/' + case_pk,
+                            type: "POST",
+                            data: {
+                                "case_code": value,
+                                "case_name": case_name,
+                                "case_vest_project": case_vest_project,
+                                'case_execute_pass': case_execute_pass
+                            },
+                            success: function (data) {
+                                if (data) {
+                                    swal({
+                                        title: "Successful",
+                                        text: "用例保存成功",
+                                        timer: 2000,
+                                        showConfirmButton: false
+                                    });
+                                    /*
+                                    setTimeout(function () {
+                                        window.location.href = '
+
+
+
+
+                                    {#                                    {% url 'ui_index' 0 %}'#}
+                                    }, 2000)
+                                    */
+                                } else {
+                                    swal({
+                                        title: "Error",
+                                        text: "用例保存失败",
+                                        timer: 2000,
+                                        showConfirmButton: false
+                                    })
+                                }
+                            }
+                        })
+                    } else {
+                        $("#case_result").html('<div class="alert alert-danger" role="alert">没有可执行的代码</div>');
+                    }
+                }
+
+
+            });
+        };
+        // 结果展示
+        /*
+        $(".case_result_alert").click(function () {
+            // swal("Good job!", "You clicked the button!", "warning");  // warning
+        })
+        */
+
+
+    </script>
+{% endblock %}

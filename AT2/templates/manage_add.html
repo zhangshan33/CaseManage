@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+
+
+{% block content_header %}
+    {#    <div>#}
+    {#        <div class="btn-toolbar">#}
+    {#            创建一个新的项目，注意，接口测试项目一经定义无法修改类型#}
+    {#        </div>#}
+    {#    </div>#}
+{% endblock %}
+{% block content_fluid %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div>
+                    <ul class="nav nav-tabs">
+                        <li role="presentation"><a href="{% url 'manage' %}">返回</a></li>
+                        {#                <li role="presentation"><a href="#">Profile</a></li>#}
+                        {#                <li role="presentation"><a href="#">Messages</a></li>#}
+                    </ul>
+                </div>
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <strong>Warning!</strong> 项目类型定以后无法修改。
+                </div>
+
+            </div>
+
+
+            <div class="col-md-8">
+                {% include 'manage_form.html' %}
+
+
+                {#            <form action="/manage_add/" method="post">#}
+                {#                            {% csrf_token %}#}
+                {#                            <div class="form-group">#}
+                {#                                <label for="recipient-name">项目名称</label>#}
+                {#                                <input type="text" class="form-control" id="projectName" name="project_name">#}
+                {#                            </div>#}
+                {#                            <div class="form-group">#}
+                {#                                <label for="recipient-name" class="control-label">项目代号</label>#}
+                {#                                <input type="text" class="form-control" id="projectNum" name="project_num">#}
+                {#                            </div>#}
+                {#                            <div class="form-group">#}
+                {#                                <label for="begin" class="control-label">项目周期</label>#}
+                {#                                <div class="input-group required">#}
+                {#                                    <input type="date" name="project_start_time" id="begin"#}
+                {#                                           class="form-control form-date"#}
+                {#                                           placeholder="开始日期" autocomplete="off">#}
+                {#                                    <span class="input-group-addon"#}
+                {#                                          style="border-radius: 0px; border-left-color: transparent;">至</span>#}
+                {#                                    <input type="date" name="project_stop_time" id="end" value=""#}
+                {#                                           class="form-control form-date"#}
+                {#                                           placeholder="截止日期" autocomplete="off">#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                             <div class="form-group">#}
+                {#                                <label for="recipient-name" class="control-label">项目类型</label>#}
+                {#                                 <select name="project_type" id="project_type" class="form-control">#}
+                {#                                     {% for type in project_type_obj %}#}
+                {#                                         <option value="{{ type.id }}">{{ type }}</option>#}
+                {#                                     {% endfor %}#}
+                {#                                 </select>#}
+                {#                            </div>#}
+                {#                            <div class="form-group">#}
+                {#                                <label for="message-text" class="control-label">项目描述</label>#}
+                {#                                <textarea class="form-control" id="projectDetail" name="project_detail"></textarea>#}
+                {#                            </div>#}
+                {#                            <div class="modal-footer">#}
+                {#                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>#}
+                {#                                <button type="submit" class="btn btn-primary" id="saveManage">保存</button>#}
+                {#                            </div>#}
+                {#                        </form>#}
+            </div>
+        </div>
+    </div>
+{% endblock %}

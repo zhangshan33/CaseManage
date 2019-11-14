@@ -1,0 +1,293 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/checkbox.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sweetalert/sweetalert.min.css' %}">
+
+{% endblock %}
+
+{% block content_header %}
+    <div class="container">
+        <div class="row">
+        </div>
+        <div class="row">
+
+            <ul class="nav nav-tabs ">
+                <li role="presentation"><a href="{% url 'index' %}">返回主页</a></li>
+                <li role="presentation">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        选择项目
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu selected_project">
+                        {% for foo in case_vest_project_name %}
+                            <li pk="{{ foo.pk }}"><a
+                                    href="{% url 'apm_index' foo.pk %}">{{ foo.project_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                <li role="presentation ">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        操作
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu operationType">
+                        <li role="presentation"><a href="#" operation="myDownloadFile">导出文件到本地</a></li>
+{#                        <li role="presentation"><a href="#" operation="myUploadFile">批量上传Python脚本文件</a></li>#}
+                    </ul>
+                </li>
+                <li role="presentation"><a href="{% url 'apm_add' 0 %}">创建用例</a></li>
+            </ul>
+            {% if case_obj %}
+                <table class="table table-hover" id="table">
+                    <thead id="table_head">
+                    <tr>
+                        <th>
+                            <div class="el-checkbox el-checkbox-green" id="checkBoxButton">
+                                <label class="el-checkbox el-checkbox-green">
+                                    <input type="checkbox" title="全选">
+                                    <span class="el-checkbox-style pull-right"></span>
+                                </label>
+                            </div>
+                        </th>
+                        <th>序号</th>
+                        <th>用例名称</th>
+                        <th>优先级</th>
+                        <th>归属项目</th>
+                        <th>执行时间</th>
+                        <th>创建人</th>
+                        <th>执行人</th>
+                        <th>用例执行状态</th>
+                        <th>用例执行结果</th>
+                        <th>操作</th>
+                    </tr>
+
+                    </thead>
+                    <tbody id="case_show">
+
+                    {% for case in case_obj %}
+                        <tr>
+                            <td>
+                                <div class="el-checkbox el-checkbox-green">
+                                    <label class="el-checkbox el-checkbox-green">
+                                        <input type="checkbox" value="{{ case.pk }}">
+                                        <span class="el-checkbox-style pull-right"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ case.case_name }}</td>
+                            <td>{{ case.case_priority }}</td>
+                            <td>{{ case.case_vest_project.project_name }}</td>
+                            <td>{{ case.case_execute_time | date:"Y-m-d H:i:s" }}</td>
+                            <td>{{ case.case_create_username }}</td>
+                            <td>{{ case.case_execute_username }}</td>
+                            <td>{{ case.case_execute_status }}</td>
+                            <td>{{ case.case_execute_pass }}</td>
+                            <td>
+                                <a href="{% url 'apm_update' case.pk %}"
+                                   class="btn btn-sm btn-warning glyphicon glyphicon-play" title="执行"></a>
+                                <a href="{% url 'apm_update' case.pk %} "
+                                   class="btn btn-sm btn-success glyphicon glyphicon-edit" title="编辑"></a>
+                                <a href="#"
+                                   class="btn btn-sm btn-danger glyphicon glyphicon-floppy-remove case_delete"
+                                   title="删除" url="{% url 'ui_delete_case' case.pk %}"></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+                <ul class="nav nav-tabs " style="border-top: 1px solid #ddd;border-bottom: none">
+                    {#                    <li role="presentation"><a href="{% url 'index' %}">返回主页</a></li>#}
+                    <li role="presentation " class="dropup">
+                        <a class="dropdown-toggle dropup" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            操作
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu operationType">
+                            <li role="presentation"><a href="#" operation="myDownloadFile">导出文件到本地</a></li>
+{#                            <li role="presentation">#}
+{#                                <a href="#" operation="myUploadFile">#}
+{#                                    批量上传Python脚本文件#}
+{#                                    <input type="file" id="get_file">#}
+{#                                </a>#}
+{#                            </li>#}
+
+                            {#                            {% for foo in case_vest_project_name %}#}
+                            {#                                <li pk="{{ foo.pk }}"><a#}
+                            {#                                        href="{% url 'ui_index' foo.pk %}">{{ foo.project_name }}</a></li>#}
+                            {#                            {% endfor %}#}
+                        </ul>
+                    </li>
+
+                    {#                    <li role="presentation"><a href="#">导出文件到本地</a></li>#}
+                    {#                    <li role="presentation"><a href="{% url 'ui_add_case' 0 %}">创建用例</a></li>#}
+                </ul>
+            {% else %}
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <strong>Warning!</strong> 没有数据啦
+                    <a href="{% url 'apm_update' 0 %}">去创建</a>
+                </div>
+            {% endif %}
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/bootstrap-checkbox.min.js' %}"></script>
+    <script src="{% static 'sweetalert/sweetalert.min.js' %}"></script>
+    <script>
+
+        // 操作
+        $(".operationType").on('click', 'li a', function () {
+            if (typeof(window[$(this).attr('operation')]) == 'function') {
+                window[$(this).attr('operation')]()
+            }
+        });
+
+
+        // 下载文件
+        function myDownloadFile() {
+            // 获取用例的pk列表
+            var case_pk = new Array();
+            var checked_arry = $('#case_show :checked');
+            // 判断用户是否勾选用例
+            if (checked_arry.length == 0) {
+                swal({
+                    title: "Error",
+                    text: "怎么着也要勾选个用例吧！",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } else {
+                $.each(checked_arry, function (index, item) {
+                    case_pk.push(item.value)
+                });
+                $.ajax({
+                    url: '{% url 'ui_download_file' %}',
+                    type: 'POST',
+                    data: {"case_pk": JSON.stringify(case_pk)},
+                    success: function (data) {
+                        window.location.href = "{% static 'case_result/temp.zip' %}"
+                    }
+                })
+            }
+        }
+
+        // 上传文件，用户可以批量上传脚本
+        function myUploadFile() {
+            console.log($)
+        }
+
+
+
+        // 全选/取消
+        $('#checkBoxButton :checkbox').change(function () {
+            if ($(this).prop('checked')) {
+                $('#case_show :checkbox').prop('checked', true);
+            } else {
+                $('#case_show :checked').prop('checked', false);
+            }
+        });
+
+        $(".case_delete").click(function () {
+            swal({
+                title: "Successful",
+                text: "用例删除成功",
+                timer: 2000,
+                showConfirmButton: false
+            });
+            var url = $(this).attr('url');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function () {
+                    window.location.href = '{% url 'ui_index' 0 %}'
+
+                }
+            })
+        })
+    </script>
+    {#    <script>#}
+    {#        $(".selected_project111").on('click', 'li', function () {#}
+    {#            var pk = $(this).attr('pk');#}
+    {#            $.ajax({#}
+    {#                url: "{% url 'ui_index' 1 %}",#}
+    {#                type: "POST",#}
+    {#                data: {'pk': pk},#}
+    {#                success: function (data) {#}
+    {#                    data_msg = JSON.parse(data.case);#}
+    {#                    // console.log(11111111, data_msg.length);#}
+    {#                    if (data_msg.length != 0) {#}
+    {#                        var table_head = `<tr>#}
+    {#                                                <th>#}
+    {#                                                    <div class="el-checkbox el-checkbox-green">#}
+    {#                                                        <label class="el-checkbox el-checkbox-green">#}
+    {#                                                            <input type="checkbox" title="全选">#}
+    {#                                                            <span class="el-checkbox-style pull-right"></span>#}
+    {#                                                        </label>#}
+    {#                                                    </div>#}
+    {#                                                </th>#}
+    {#                                                <th>序号</th>#}
+    {#                                                <th>用例名称</th>#}
+    {#                                                <th>优先级</th>#}
+    {#                                                <th>执行时间</th>#}
+    {#                                                <th>创建人</th>#}
+    {#                                                <th>执行人</th>#}
+    {#                                                <th>用例执行状态</th>#}
+    {#                                                <th>用例执行结果</th>#}
+    {#                                                <th>操作</th>#}
+    {#                                            </tr>`;#}
+    {##}
+    {#                        var html = '';#}
+    {#                        $.each(data_msg, function (index, item) {#}
+    {#                            // console.log(22222222, item.pk, item.fields.case_name, item.fields.case_vest_project.project_name,);#}
+    {#                            html += `<tr>#}
+    {#                                        <td>#}
+    {#                                            <div class="el-checkbox el-checkbox-green">#}
+    {#                                                <label class="el-checkbox el-checkbox-green">#}
+    {#                                                    <input type="checkbox" case_pk="${item.pk}">#}
+    {#                                                    <span class="el-checkbox-style pull-right"></span>#}
+    {#                                                </label>#}
+    {#                                            </div>#}
+    {#                                        </td>#}
+    {#                                        <td>${index + 1}</td>#}
+    {#                                        <td>${item.fields.case_name}</td>#}
+    {#                                        <td>${item.fields.case_priority}</td>#}
+    {#                                        <td>${item.fields.case_create_username}</td>#}
+    {#                                        <td>${item.fields.case_execute_username}</td>#}
+    {#                                        <td>${item.fields.case_execute_status}</td>#}
+    {#                                        <td>${item.fields.case_execute_pass}</td>#}
+    {#                                        <td>#}
+    {#<a href="{% url 'ui_edit_case' ${item.fields.pk} %} " class="btn btn-sm btn-success glyphicon glyphicon-edit" title="编辑"></a>#}
+    {#<a href="{% url 'ui_delete_case' ${item.fields.pk} %} " class="btn btn-sm btn-danger glyphicon glyphicon-floppy-remove" title="删除"></a>#}
+    {#                                        </td>#}
+    {#                                    </tr>`;#}
+    {#                        });#}
+    {#                        $("#table_head").html(table_head);#}
+    {#                        $("#case_show").html(html);#}
+    {#                    } else {#}
+    {#                        $("#table").html('<div class="alert alert-warning" role="alert">哎呀，没有用例，<a href="{% url 'ui_add_case' 0 %}">去添加</a></div>')#}
+    {#                    }#}
+    {#                }#}
+    {#            })#}
+    {#        })#}
+    {##}
+    {##}
+    {#    </script>#}
+
+
+{% endblock %}

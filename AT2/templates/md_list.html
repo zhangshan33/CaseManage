@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content_header %}
+{#    <div class="container">#}
+{#        <div class="row">#}
+{#            <div class="col-md-8 col-md-offset-2">#}
+{#                <b class="btn  btn-default" disabled="disabled">[{{ project }}] 模块</b>#}
+{#                <a href="/index/" class="btn  btn-default">返回项目列表</a>#}
+                {#                <a href="/case_add/{{ project.id }}" class="btn btn-success">添加用例</a>#}
+{#                <a href="/case_add/" class="btn btn-success">添加用例</a>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}
+{% block content_fluid %}
+    <div class="container">
+        <div class="row">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#"><strong>{{ project }}</strong> - 模块</a></li>
+                <li role="presentation"><a href="{% url 'manage' %}">返回项目管理页面</a></li>
+                <li role="presentation"><a href="{% url 'case_add' %}">添加用例</a></li>
+
+            </ul>
+        </div>
+
+        <div class="row">
+{#            <div class="col-md-8 col-md-offset-2">#}
+
+                {% if obj %}
+                    <table class="table  table-hover">
+                        <thead>
+                        <tr>
+                            <th>模块名称</th>
+                            <th>模块编号</th>
+                            <th>所属项目</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for foo in obj %}
+                            <tr>
+                                <td>{{ foo.model_name }}</td>
+                                <td>{{ foo.model_num }}</td>
+                                <td>{{ foo.project }}</td>
+                                <td>
+                                    <a href="/md_edit/{{ foo.id }}" class="btn btn-default glyphicon glyphicon-edit" title="编辑"></a>
+                                    <a href="/md_delete/{{ foo.id }}" class="btn btn-danger glyphicon glyphicon-floppy-remove" title="删除"></a>
+
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div>{{ project }} 下暂无模块</div>
+                    <a href="/md_add/{{ project.id }}" class="btn  btn-success">去添加</a>
+                {% endif %}
+
+
+{#            </div>#}
+        </div>
+    </div>
+{% endblock %}

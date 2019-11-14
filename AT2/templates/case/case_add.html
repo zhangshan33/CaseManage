@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+
+
+{% block content_header %}
+    {#    <div class="container">#}
+    {#        <div class="row">#}
+    {#            <div class="col-md-12">#}
+    {#                <div class="page-header">#}
+    {#                    <h1>添加用例#}
+    {#                        <small>#}
+    {#                            <a href="/index/" class="btn btn-default" role="button">返回模块列表</a>#}
+    {#                            <a href="/interface/" class="btn btn-default" role="button">返回接口测试列表</a>#}
+    {#                            <button class="btn btn-dropbox submitData">提交数据</button>#}
+    {#                        </small>#}
+    {#                    </h1>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+{% endblock %}
+
+
+{% block content_fluid %}
+
+    <div>
+
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="{% url 'interface' %}">返回接口测试主页</a></li>
+                    {#                <li role="presentation"><a href="#">Profile</a></li>#}
+                    {#                <li role="presentation"><a href="#">Messages</a></li>#}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+
+
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon2">所属项目</span>
+                    <select class="form-control myProject" aria-describedby="sizing-addon2">
+                        <option value="">--请选择--</option>
+                        {% for f1 in project_obj %}
+                            {% if f1.projectmodel_set.all %}
+                                <option value="{{ f1.id }}">{{ f1.project_name }}</option>
+                            {% else %}
+                            {% endif %}
+
+                        {% endfor %}
+                    </select>
+                    <!--<a class="input-group-addon btn-default" id="sizing-addon2">添加项目</a>-->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon2">所属模块</span>
+                    <select class="form-control myModel" aria-describedby="sizing-addon2 "></select>
+                    <!--<a href="" class="input-group-addon btn-default" id="sizing-addon2">添加模块</a>-->
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon2">用例标题</span>
+                    <input type="text" class="form-control case_title" aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon2">优先级</span>
+                    <select class="form-control case_priority" aria-describedby="sizing-addon2">
+                        <option value="1">1级</option>
+                        <option value="2">2级</option>
+                        <option value="3">3级</option>
+                        <option value="4">4级</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon2">用例创建人</span>
+                    <input type="text" class="form-control case_create_username" aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon2">用例执行人</span>
+                    <input type="text" class="form-control case_execute_username" aria-describedby="basic-addon1">
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon2">请求地址</span>
+                    <input type="text" class="form-control case_url" aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon " id="sizing-addon2">请求方式</span>
+                    <input type="text" class="form-control case_method" aria-describedby="basic-addon1"
+                           placeholder="POST">
+                </div>
+            </div>
+
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">信息头</div>
+                    <div class="panel-body">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th>key</th>
+                                <th>value</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody class="Header">
+                            <tr>
+                                <td><input type="text" class="form-control"></td>
+                                <td><input type="text" class="form-control"></td>
+                                <td>
+                                    <button class="btn btn-success glyphicon glyphicon-plus header_plus"></button>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">参数</div>
+                    <div class="panel-body">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th>key</th>
+                                <th>value</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody class="Parameter">
+                            <tr>
+                                <td><input type="text" class="form-control"></td>
+                                <td><input type="text" class="form-control"></td>
+                                <td>
+                                    <button class="btn btn-success glyphicon glyphicon-plus parameterPlus"></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="input-group">
+                    <span class="input-group-addon " id="sizing-addon2">预期结果</span>
+                    <input type="text" class="form-control case_expect" aria-describedby="basic-addon1">
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-8">
+{#                <a href="/md_list/{{ project_obj.id }}" class="btn btn-default" role="button">返回模块列表</a>#}
+                <button class="btn btn-dropbox submitData">提交数据</button>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+
+        // 信息头处理添加删除input框
+        $(".header_plus").click(function () {
+            var $cloneMsg = $(this).parent().parent().clone();
+            $cloneMsg.find('button').attr('class', 'btn btn-danger glyphicon glyphicon-minus header_minus');
+            $(".Header").append($cloneMsg);
+        });
+        $(".Header").on('click', '.header_minus', function () {
+            $(this).parent().parent().remove();
+        });
+
+        // 参数处理添加删除input框
+        $(".parameterPlus").click(function () {
+            var $cloneMsg = $(this).parent().parent().clone();
+            $cloneMsg.find('button').attr('class', 'btn btn-danger glyphicon glyphicon-minus parameterMinus');
+            $(".Parameter").append($cloneMsg);
+        });
+        $(".Parameter").on('click', '.parameterMinus', function () {
+            $(this).parent().parent().remove();
+        })
+
+        // 获取输入数据并提交
+
+        // 项目和模块做二级联动，点击项目自动展示关联的模块
+        $(".myProject").change(function () {
+            {#console.log($('.myProject option:selected').text())#}
+            $(".myProject").find('option').eq(0).remove();
+            var idMsg = $(this).find('option:selected').val();
+            $.ajax({
+                url: "/case/choices_model/",
+                type: "POST",
+                data: {"id": idMsg},
+                success: function (data) {
+                    var html = '';
+                    $.each(data.obj, function (index, item) {
+                        html += '<option value="' + item['id'] + '">' + item['model_name'] + '</option>';
+                    });
+                    $('.myModel').html(html);
+                }
+            })
+        });
+
+        // 获取用例数据并发到后端
+        $(".submitData").click(function () {
+            var case_title = $(".case_title").val();
+            var case_model = $(".myModel").find('option:selected').val();
+            var case_priority = $(".case_priority").find('option:selected').val();
+            var case_url = $(".case_url").val();
+            var case_method = $(".case_method").val();
+            var case_expect = $(".case_expect").val();
+            var case_execute_username = $(".case_execute_username").val();
+            var case_create_username = $(".case_create_username").val();
+
+            let case_header = new Array();
+            $.each($('.Header').find('tr'), function (index, item) {
+                case_header.push({
+                    'key': $(item).find('input').eq(0).val(),
+                    'value': $(item).find('input').eq(1).val()
+                });
+            });
+            var case_parameters = new Array();
+            $.each($('.Parameter').find('tr'), function (index, item) {
+                {#console.log($(item).find('input').eq(0).val(), $(item).find('input').eq(1).val());#}
+                case_parameters.push({
+                    "key": $(item).find('input').eq(0).val(),
+                    "value": $(item).find('input').eq(1).val()
+                });
+            });
+            $.ajax({
+                url: "/case_add/",
+                type: "POST",
+                data: {
+                    "case_model": case_model,
+                    "case_priority": case_priority,
+                    "case_title": case_title,
+                    "case_url": case_url,
+                    "case_header": JSON.stringify(case_header),
+                    "case_parameters": JSON.stringify(case_parameters),
+                    "case_method": case_method,
+                    "case_expect": case_expect,
+                    "case_create_username": case_create_username,
+                    "case_execute_username": case_execute_username,
+                },
+                success: function (data) {
+                    // 执行成功，跳转到指定的页面
+                    window.location.href = '/interface/'
+                }
+            })
+
+        });
+
+    </script>
+
+{% endblock %}
