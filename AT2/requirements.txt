@@ -35,7 +35,7 @@ pdfkit==0.6.0
 Pillow==6.1.0
 pluggy==0.13.0
 prettytable==0.7.2
-psutil==5.6.3
+psutil==5.6.6
 py==1.8.0
 pyecharts==0.5.11
 pyecharts-javascripthon==0.0.6
