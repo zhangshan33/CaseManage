@@ -32,7 +32,7 @@ numpy==1.17.2
 opencv-python==3.4.2.16
 packaging==19.2
 pdfkit==0.6.0
-Pillow==6.1.0
+Pillow==9.0.0
 pluggy==0.13.0
 prettytable==0.7.2
 psutil==5.6.3
