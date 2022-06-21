@@ -28,7 +28,7 @@ MarkupSafe==1.1.1
 memory-profiler==0.55.0
 more-itertools==7.2.0
 multidict==4.5.2
-numpy==1.17.2
+numpy==1.22.0
 opencv-python==3.4.2.16
 packaging==19.2
 pdfkit==0.6.0
