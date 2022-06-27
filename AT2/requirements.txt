@@ -48,7 +48,7 @@ python-docx==0.8.10
 python-resources==0.3
 pytz==2019.2
 PyYAML==5.1.2
-reportlab==3.5.26
+reportlab==3.5.55
 requests==2.22.0
 selenium==3.141.0
 simplejson==3.16.0
